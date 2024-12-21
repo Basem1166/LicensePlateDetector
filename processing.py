@@ -41,21 +41,25 @@ def initial_roi_region(weighted_edges, gray_img):
         return filtered_regions
 
 def findFinalRoiRegion(filtered_roi_regions, gray_img):
+ 
+    
+
     final_roi_regions = []
     for region in filtered_roi_regions:
         height = region[1] - region[0]
-        if  height <= gray_img.shape[0] / 4.5:
+        if  height <= gray_img.shape[0] / 4.5 :
             if final_roi_regions and region[0] - final_roi_regions[-1][1] < 15:
                 final_roi_regions[-1][1] = region[1]
             else:
                 final_roi_regions.append(region)
+
+
+    if final_roi_regions:
+        final_roi_regions = [final_roi_regions[-1]]
     return final_roi_regions
 
 def update_edge_power(vertical_edges, roi_regions):
     power_edges = np.zeros_like(vertical_edges)
-    print(roi_regions)
-    cBig = 0
-    cSmall = 0
     for region in roi_regions:
 
         start_row, end_row = region
@@ -75,9 +79,8 @@ def update_edge_power(vertical_edges, roi_regions):
                         
                             
 
-                    # Rule 3: Increase edge power from top to bottom
+                    # Rule 3: Increase edge power from top to bottom exponen
                     power_edges[y, x] += (y - start_row) / (end_row - start_row + 1)
-    print(cSmall, cBig)
     return power_edges
 
 def select_roi_candidate(power_edges, roi_regions):
@@ -86,8 +89,6 @@ def select_roi_candidate(power_edges, roi_regions):
     for region in roi_regions:
         start_row, end_row = region
         region_power = np.sum(power_edges[start_row:end_row + 1, :])
-        region_variance = np.var(power_edges[start_row:end_row + 1, :])
-        score = region_power * region_variance  # Combine power and variance to score the region
         if region_power > max_score:
             max_score = region_power
             selected_roi = region
@@ -125,7 +126,7 @@ def locate_license_plate_columns(roi_img, magic_number=4):
 
     return max_count_index, max_count_index + check_length
 
-def growing_window_filter(roi_img, initial_start_col, initial_end_col, step=10, binary_image=None):
+def growing_window_filter(roi_img, initial_start_col, initial_end_col, step=15, binary_image=None):
     rows, cols = roi_img.shape
 
     # Expand to the right

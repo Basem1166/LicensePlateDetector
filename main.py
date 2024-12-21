@@ -38,7 +38,7 @@ def main():
             gray_img = rgb2gray(img)
             #return gray_img,filtered_image, equalized_image, binary_image,  roi_img, detected_plate, final_cropped_plate
 
-            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image , roi_img, detected_plate, final_cropped_plate = LicenesePlateDetector(gray_img)
+            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate = LicenesePlateDetector(gray_img)
             gray_img = process_image_for_display(gray_img)
             filtered_image = process_image_for_display(filtered_image)
             equalized_image = process_image_for_display(equalized_image)
@@ -46,6 +46,7 @@ def main():
             detected_plate = process_image_for_display(detected_plate)
             final_cropped_plate = process_image_for_display(final_cropped_plate)
             inital_roi_image = process_image_for_display(inital_roi_image)
+            filtered_roi_img = process_image_for_display(filtered_roi_img)
             end = time.time()
 
             processing_time = end - start_time
@@ -66,13 +67,15 @@ def main():
                     st.image(equalized_image, caption="Equalized Image")
                     
             with tab2:
-                col1, col2, col3 = st.columns(3)
+                col1, col2, col3, col4 = st.columns(4)
                 with col1:
                     st.image(binary_image, caption="Binary Image")
                 with col2:
                     st.image(inital_roi_image, caption="Initial ROI Regions")
                 with col3:
-                    st.image(roi_img, caption="ROI Detection")
+                    st.image(filtered_roi_img, caption="Final ROI Regions")
+                with col4:
+                    st.image(roi_img, caption="Most Promising ROI")
                     
             with tab3:
                 col1, col2 = st.columns(2)
