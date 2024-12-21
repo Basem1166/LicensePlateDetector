@@ -70,9 +70,9 @@ def main():
                 with col1:
                     st.image(binary_image, caption="Binary Image")
                 with col2:
-                    st.image(roi_img, caption="ROI Detection")
+                    st.image(inital_roi_image, caption="Initial ROI Regions")
                 with col3:
-                    st.image(inital_roi_image, caption="Detected Plate")
+                    st.image(roi_img, caption="ROI Detection")
                     
             with tab3:
                 col1, col2 = st.columns(2)

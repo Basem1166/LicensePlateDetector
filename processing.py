@@ -4,7 +4,7 @@ def initial_roi_region(weighted_edges, gray_img):
         
         # Threshold rows depending on edges variance
         row_var = np.var(weighted_edges, axis=1)
-        thresh = max(row_var)/2.5
+        thresh = max(row_var)/3
         roi_img = np.zeros(weighted_edges.shape)
         roi_img[row_var>thresh, :] = gray_img[row_var>thresh, :]
         # Get ROI regions and then filter them
@@ -35,7 +35,7 @@ def initial_roi_region(weighted_edges, gray_img):
 
         filtered_regions = []
         for region in roi_regions:
-            if region[1] - region[0] > 10 and region[1] - region[0] < gray_img.shape[0]/3 and region[0] > 200: 
+            if region[1] - region[0] > 10 and region[1] - region[0] < gray_img.shape[0]/3 : 
 
                 filtered_regions.append(region)
         return filtered_regions
@@ -66,7 +66,7 @@ def update_edge_power(vertical_edges, roi_regions):
                     if x > vertical_edges.shape[1] * 0.1 and x < vertical_edges.shape[1] * 0.9:
                         power_edges[y, x] += 2
                     else:
-                        power_edges[y, x] += 0.5
+                        power_edges[y, x] += 1
 
                     # Rule 2: Edges with the same height and occurrence distance less than 25 get maximum power
                     for prev_x in range(max(0, x - 25), min(vertical_edges.shape[1], x + 25)):
