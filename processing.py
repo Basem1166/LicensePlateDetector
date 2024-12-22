@@ -61,23 +61,28 @@ def update_edge_power(vertical_edges, roi_regions):
     power_edges = np.zeros_like(vertical_edges)
   
     for region in roi_regions:
-
         start_row, end_row = region
-        for y in range(start_row, end_row + 1):
-            for x in range(200, 500):
-                if vertical_edges[y, x] > 50:
-                    if x > vertical_edges.shape[1] * 0.1 and x < vertical_edges.shape[1] * 0.9:
-                        power_edges[y, x] += 1
-                    
-
-                    for prev_x in range(max(0, x - 25), min(vertical_edges.shape[1], x + 25)):
-                        if vertical_edges[y, prev_x] > 0 and abs(prev_x - x) < 25:
-                            power_edges[y, x] += 3
+        region_height = end_row - start_row + 1
+        print(start_row)
+        # Process edges within each ROI region
+        if(start_row > 100):
+            for y in range(start_row, end_row + 1):
+                for x in range(vertical_edges.shape[1]):
+                    if vertical_edges[y, x] > 50:  # Edge threshold
+                        # Rule 1: Higher power for edges not at image extremes
+                        if 0.1 * vertical_edges.shape[1] < x < 0.9 * vertical_edges.shape[1]:
+                            power_edges[y, x] = 2
                         
-                            
+                        # Rule 2: Boost power for edges with nearby edges (distance < 25)
+                        x_start = max(0, x - 25)
+                        x_end = min(vertical_edges.shape[1], x + 25)
+                        nearby_edges = vertical_edges[y, x_start:x_end] > 50
+                        power_edges[y, x] += 3 * np.sum(nearby_edges)
+                        
+                        # Rule 3: Increase power based on vertical position
+                        relative_height = (y - start_row) / region_height
+                        power_edges[y, x] += relative_height * 2
 
-                    # Rule 3: Increase edge power from top to bottom
-                    power_edges[y, x] += ((y - start_row) / (end_row - start_row + 1))
     return power_edges
 
 def select_roi_candidate(power_edges, roi_regions):
@@ -91,6 +96,7 @@ def select_roi_candidate(power_edges, roi_regions):
             selected_roi = region
 
     return selected_roi
+
 
 
 def locate_license_plate_columns(roi_img, magic_number=4):

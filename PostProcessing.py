@@ -131,9 +131,7 @@ def getCharacters(plate):
                     diff[i]= (most_common_color[i] - filling_color[i])**2
 
             distance = math.sqrt(np.sum(diff))
-            print(distance, most_common_color, filling_color)
             if distance <= 20:
-                print("Character")
                 characters.append(area)
                 #show_images([area], ["Character"])
         

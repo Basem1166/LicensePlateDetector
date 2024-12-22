@@ -88,12 +88,12 @@ def LicenesePlateDetector(img):
 
     show_images([roi_img, final_cropped_plate], ["Selected ROI", "Final Cropped Plate"])
 
-    extracted_plate = extractPlate(img[start_row:end_row, left_start_col:right_end_col])
-    characters = getCharacters(extracted_plate)
+    # extracted_plate = extractPlate(img[start_row:end_row, left_start_col:right_end_col])
+    # characters = getCharacters(extracted_plate)
 
 
 
-    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate , extracted_plate, characters
+    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate
     
 
     
