@@ -47,40 +47,37 @@ def findFinalRoiRegion(filtered_roi_regions, gray_img):
     final_roi_regions = []
     for region in filtered_roi_regions:
         height = region[1] - region[0]
-        if  height <= gray_img.shape[0] / 4.5 :
+        if  height <= gray_img.shape[0] / 5 :
             if final_roi_regions and region[0] - final_roi_regions[-1][1] < 15:
                 final_roi_regions[-1][1] = region[1]
             else:
                 final_roi_regions.append(region)
 
 
-    if final_roi_regions:
-        final_roi_regions = [final_roi_regions[-1]]
+
     return final_roi_regions
 
 def update_edge_power(vertical_edges, roi_regions):
     power_edges = np.zeros_like(vertical_edges)
+  
     for region in roi_regions:
 
         start_row, end_row = region
         for y in range(start_row, end_row + 1):
-            for x in range(vertical_edges.shape[1]):
-                if vertical_edges[y, x] > 0:
-                    # Rule 1: Edges not in the extreme left or right get higher power
+            for x in range(200, 500):
+                if vertical_edges[y, x] > 50:
                     if x > vertical_edges.shape[1] * 0.1 and x < vertical_edges.shape[1] * 0.9:
-                        power_edges[y, x] += 2
-                    else:
                         power_edges[y, x] += 1
+                    
 
-                    # Rule 2: Edges with the same height and occurrence distance less than 25 get maximum power
                     for prev_x in range(max(0, x - 25), min(vertical_edges.shape[1], x + 25)):
                         if vertical_edges[y, prev_x] > 0 and abs(prev_x - x) < 25:
                             power_edges[y, x] += 3
                         
                             
 
-                    # Rule 3: Increase edge power from top to bottom exponen
-                    power_edges[y, x] += (y - start_row) / (end_row - start_row + 1)
+                    # Rule 3: Increase edge power from top to bottom
+                    power_edges[y, x] += ((y - start_row) / (end_row - start_row + 1))
     return power_edges
 
 def select_roi_candidate(power_edges, roi_regions):

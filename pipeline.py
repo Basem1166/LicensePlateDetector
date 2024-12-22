@@ -1,12 +1,17 @@
 from preprocessing import *
 from processing import *
 import cv2
+import numpy as np
+from PostProcessing import *
 
-def LicenesePlateDetector(gray_img):
+
+def LicenesePlateDetector(img):
+    gray_img = rgb2gray(img)
     #filtered_image = bilateral_filter(gray_img, 17, 17)
     # 8u and 32f images
     gray_img_img = gray_img.astype(np.float32)
-    filtered_image = cv2.bilateralFilter(gray_img_img, 17, 17, 17)
+    filtered_image = cv2.bilateralFilter(gray_img_img,17, 17, 17)
+    #filtered_image = median(gray_img)
     show_images([gray_img, filtered_image], ["Original", "Filtered"])
     
     equalized_image = CLAHE(filtered_image)
@@ -83,7 +88,12 @@ def LicenesePlateDetector(gray_img):
 
     show_images([roi_img, final_cropped_plate], ["Selected ROI", "Final Cropped Plate"])
 
-    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate
+    extracted_plate = extractPlate(img[start_row:end_row, left_start_col:right_end_col])
+    characters = getCharacters(extracted_plate)
+
+
+
+    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate , extracted_plate, characters
     
 
     

@@ -35,10 +35,10 @@ def main():
         with st.spinner('Processing image...'):
             img = io.imread(image_path)
             img = cv2.resize(img, (704, 576))
-            gray_img = rgb2gray(img)
             #return gray_img,filtered_image, equalized_image, binary_image,  roi_img, detected_plate, final_cropped_plate
 
-            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate = LicenesePlateDetector(gray_img)
+            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate, extracted_plate,characters = LicenesePlateDetector(img)
+
             gray_img = process_image_for_display(gray_img)
             filtered_image = process_image_for_display(filtered_image)
             equalized_image = process_image_for_display(equalized_image)
@@ -47,11 +47,13 @@ def main():
             final_cropped_plate = process_image_for_display(final_cropped_plate)
             inital_roi_image = process_image_for_display(inital_roi_image)
             filtered_roi_img = process_image_for_display(filtered_roi_img)
+            extracted_plate = process_image_for_display(extracted_plate)
+                
             end = time.time()
 
             processing_time = end - start_time
             # Create tabs for different processing stages
-            tab1, tab2, tab3 = st.tabs(["Pre-processing", "ROI Detection", "Final Result"])
+            tab1, tab2, tab3, tab4 = st.tabs(["Pre-processing", "ROI Detection", "License Plate Detection", "Character Recognition"])
             
             with tab1:
                 col1, col2 = st.columns(2)
@@ -83,7 +85,14 @@ def main():
                     st.image(detected_plate, caption="Detected Plate")
                 with col2:
                     st.image(final_cropped_plate, caption="Final Result")
-                
+            
+            with tab4:
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.image(extracted_plate, caption="Extracted Plate")
+                with col2:
+                    for i, char in enumerate(characters):
+                        st.image(process_image_for_display(char), caption=f"Character {i+1}")
                 # End timer
                 
                 # Add metrics
