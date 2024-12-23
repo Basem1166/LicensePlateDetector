@@ -5,7 +5,7 @@ import cv2
 import os
 from skimage import io
 
-directory = "./dataset/images"
+directory = "./imgs"
 images = os.listdir(directory)
 
 def process_image_for_display(img):
