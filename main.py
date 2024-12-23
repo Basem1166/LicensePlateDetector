@@ -5,7 +5,7 @@ import cv2
 import os
 from skimage import io
 
-directory = "./imgs"
+directory = "./dataset/images"
 images = os.listdir(directory)
 
 def process_image_for_display(img):
@@ -19,12 +19,19 @@ def process_image_for_display(img):
 def main():
     st.title("License Plate Detection")
     st.write("This is a simple web app to detect license plates in images")
-    
+   
+
+
     # Image selection
     selected_image = st.selectbox("Select an image", images)
     image_path = os.path.join(directory, selected_image)
+
+
     # Display selected image
     st.image(image_path, caption="Selected Image")
+    # Button to go to the next image
+   
+   
     # Load and process image
     if st.button("Detect License Plate"):
         # start timer
