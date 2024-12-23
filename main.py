@@ -5,7 +5,7 @@ import cv2
 import os
 from skimage import io
 
-directory = "./dataset/images"
+directory = "./imgs"
 images = os.listdir(directory)
 
 def process_image_for_display(img):
@@ -98,7 +98,8 @@ def main():
             with tab4:
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    st.write(f"Detected Plate using DNN: {result}")
+                    st.write(f"Detected Plate using DNN: ")
+                    st.write(result)
                 with col2:
                     st.write(f"Segmented characters : {plate_text}")
                     for i, char in enumerate(characters):
