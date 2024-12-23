@@ -5,7 +5,7 @@ import cv2
 import os
 from skimage import io
 
-directory = "./imgs"
+directory = "./dataset/images"
 images = os.listdir(directory)
 
 def process_image_for_display(img):
@@ -44,7 +44,7 @@ def main():
             img = cv2.resize(img, (704, 576))
             #return gray_img,filtered_image, equalized_image, binary_image,  roi_img, detected_plate, final_cropped_plate
 
-            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate, extracted_plate, characters,plate_text = LicenesePlateDetector(img)
+            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate, extracted_plate, characters,plate_text, result = LicenesePlateDetector(img)
 
             gray_img = process_image_for_display(gray_img)
             filtered_image = process_image_for_display(filtered_image)
