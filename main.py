@@ -43,9 +43,11 @@ def main():
             img = io.imread(image_path)
             img = cv2.resize(img, (704, 576))
             #return gray_img,filtered_image, equalized_image, binary_image,  roi_img, detected_plate, final_cropped_plate
-
-            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate, extracted_plate, characters,plate_text, result = LicenesePlateDetector(img)
-
+            try:
+                gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate, extracted_plate, characters,plate_text, result = LicenesePlateDetector(img)
+            except:
+                st.error("No License Plate Detected")
+                return
             gray_img = process_image_for_display(gray_img)
             filtered_image = process_image_for_display(filtered_image)
             equalized_image = process_image_for_display(equalized_image)
@@ -91,21 +93,19 @@ def main():
                 with col1:
                     st.image(detected_plate, caption="Detected Plate")
                 with col2:
-                    st.image(final_cropped_plate, caption="Final Result")
+                    st.image(final_cropped_plate, caption="Final Cropped Plate")
             
             with tab4:
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    st.image(extracted_plate, caption="Extracted Plate")
+                    st.write(f"Detected Plate using DNN: {result}")
                 with col2:
-                    st.write(f"Detected Plate: {plate_text}")
-                with col3:
+                    st.write(f"Segmented characters : {plate_text}")
                     for i, char in enumerate(characters):
                         st.image(char, caption=f"Character {i+1}")
-                # End timer
-                
-            #     # Add metrics
-            #     st.metric(label="Processing Time", value=f"{processing_time:.2f} seconds")
+
+            
+            st.metric(label="Processing Time", value=f"{processing_time:.2f} seconds")
             
             st.success('License plate detection completed!')
 if __name__ == "__main__":
