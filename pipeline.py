@@ -90,10 +90,9 @@ def LicenesePlateDetector(img):
 
     extracted_plate = extractPlate(img[start_row:end_row, left_start_col:right_end_col])
     characters = getCharacters(extracted_plate)
+    plate_text = potentialCharacter(characters)
 
-
-
-    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate , extracted_plate, characters
+    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate , extracted_plate, characters, plate_text
     
 
     

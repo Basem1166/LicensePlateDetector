@@ -9,7 +9,7 @@ directory = "./imgs"
 images = os.listdir(directory)
 
 def process_image_for_display(img):
-    print(img)
+    # print(img)
     if img is None:
         return None
     # Convert to float in range [0,1]
@@ -37,7 +37,7 @@ def main():
             img = cv2.resize(img, (704, 576))
             #return gray_img,filtered_image, equalized_image, binary_image,  roi_img, detected_plate, final_cropped_plate
 
-            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate, extracted_plate,characters = LicenesePlateDetector(img)
+            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate, extracted_plate, characters,plate_text = LicenesePlateDetector(img)
 
             gray_img = process_image_for_display(gray_img)
             filtered_image = process_image_for_display(filtered_image)
@@ -87,12 +87,14 @@ def main():
                     st.image(final_cropped_plate, caption="Final Result")
             
             with tab4:
-                col1, col2 = st.columns(2)
+                col1, col2, col3 = st.columns(3)
                 with col1:
                     st.image(extracted_plate, caption="Extracted Plate")
                 with col2:
+                    st.write(f"Detected Plate: {plate_text}")
+                with col3:
                     for i, char in enumerate(characters):
-                        st.image(process_image_for_display(char), caption=f"Character {i+1}")
+                        st.image(char, caption=f"Character {i+1}")
                 # End timer
                 
                 # Add metrics
