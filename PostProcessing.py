@@ -143,6 +143,33 @@ def getCharacters(plate):
     # Filter contours by size and position
     for cnt in contours:
         x, y, w, h = cv2.boundingRect(cnt)
+=======
+        most_common_color = None
+
+    # Loop through the contours to extract the characters
+    for c in contour:
+        x, y, w, h = cv2.boundingRect(c)
+
+        if w == plate.shape[1] and h == plate.shape[0]:
+            continue
+
+        if w*h > 100:
+            area = plate[y:y+h, x:x+w]
+            filling_color = getFillingColor(area)
+
+            # Getting based on the actual color of the region nor the binary color
+            diff = [0,0,0]
+            for i in range(3):
+                if filling_color[i] > most_common_color[i]:
+                    diff[i] = (filling_color[i] - most_common_color[i])**2
+                else:
+                    diff[i]= (most_common_color[i] - filling_color[i])**2
+
+            distance = math.sqrt(np.sum(diff))
+            if distance <= 20:
+                characters.append(area)
+                #show_images([area], ["Character"])
+>>>>>>> ace73eec1ac25dde937b455e60e872a2ceb4b110
         
         # Size filtering
         if (0.5 * avg_height <= h <= 1.5 * avg_height and 
