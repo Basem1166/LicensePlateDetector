@@ -3,6 +3,7 @@ from processing import *
 import cv2
 import numpy as np
 from PostProcessing import *
+from DNN import *
 
 
 def LicenesePlateDetector(img):
@@ -91,9 +92,13 @@ def LicenesePlateDetector(img):
     # extracted_plate = extractPlate(img[start_row:end_row, left_start_col:right_end_col])
     # characters = getCharacters(extracted_plate)
 
-
-
-    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate
+    result = get_text_from_image(img[start_row:end_row, left_start_col:right_end_col])
+    if  result[0] is not None:
+        result = result[0][0][1][0]
+    else:
+        #result = get_text_from_image_arabic(img[start_row:end_row, left_start_col:right_end_col])
+        result = None
+    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate , result
     
 
     

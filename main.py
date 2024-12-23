@@ -5,7 +5,7 @@ import cv2
 import os
 from skimage import io
 
-directory = "./dataset/images"
+directory = "./imgs"
 images = os.listdir(directory)
 
 def process_image_for_display(img):
@@ -43,7 +43,7 @@ def main():
             img = cv2.resize(img, (704, 576))
             #return gray_img,filtered_image, equalized_image, binary_image,  roi_img, detected_plate, final_cropped_plate
 
-            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate = LicenesePlateDetector(img)
+            gray_img, filtered_image, equalized_image, binary_image, inital_roi_image ,filtered_roi_img, roi_img, detected_plate, final_cropped_plate , result = LicenesePlateDetector(img)
 
             gray_img = process_image_for_display(gray_img)
             filtered_image = process_image_for_display(filtered_image)
@@ -91,6 +91,14 @@ def main():
                     st.image(detected_plate, caption="Detected Plate")
                 with col2:
                     st.image(final_cropped_plate, caption="Final Result")
+            
+            with tab4:
+                st.write("Character Recognition")
+                if result:
+                    st.write(result)
+                else:
+                    st.write("No characters detected")
+
             
             # with tab4:
             #     col1, col2 = st.columns(2)
