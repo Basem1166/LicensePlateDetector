@@ -89,8 +89,10 @@ def LicenesePlateDetector(img):
 
     show_images([roi_img, final_cropped_plate], ["Selected ROI", "Final Cropped Plate"])
 
-    # extracted_plate = extractPlate(img[start_row:end_row, left_start_col:right_end_col])
-    # characters = getCharacters(extracted_plate)
+    extracted_plate = extractPlate(img[start_row:end_row, left_start_col:right_end_col])
+    # characters = segment_characters(img[start_row:end_row, left_start_col:right_end_col])
+    characters = getCharacters(extracted_plate)
+    plate_text = potentialCharacter(characters)
 
     result = get_text_from_image(img[start_row:end_row, left_start_col:right_end_col])
     if  result[0] is not None:
@@ -98,7 +100,7 @@ def LicenesePlateDetector(img):
     else:
         #result = get_text_from_image_arabic(img[start_row:end_row, left_start_col:right_end_col])
         result = None
-    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate , result
+    return gray_img,filtered_image, equalized_image, binary_image, inital_roi_image,filtered_roi_img, roi_img, detected_plate, final_cropped_plate , extracted_plate, characters, plate_text, result
     
 
     
