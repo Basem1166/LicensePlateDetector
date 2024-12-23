@@ -87,7 +87,7 @@ def extractPlate(plate):
     center = ((box[0][0] + box[2][0]) // 2, (box[0][1] + box[2][1]) // 2)
     width = int(np.linalg.norm(box[1] - box[0]))
     height = int(np.linalg.norm(box[2] - box[1]))
-    
+    center = (int(center[0]), int(center[1]))
     # Perform rotation
     M = cv2.getRotationMatrix2D(center, angle, 1.0)
     rotated = cv2.warpAffine(img, M, (img.shape[1], img.shape[0]))
